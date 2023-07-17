@@ -1,0 +1,19 @@
+environment = "JULIA_DEPOT_PATH='/lustre/fs24/group/cqta/tangelides/.julia:$JULIA_DEPOT_PATH'"
+
+executable = /lustre/fs24/group/cqta/tangelides/julia-1.8.5/bin/julia
+
+arguments = /lustre/fs24/group/cqta/tangelides/ITensors_tutorial/parallelization_tutorial.jl 
+
+transfer_input_files = /lustre/fs24/group/cqta/tangelides/ITensors_tutorial/parallelization_tutorial.jl 
+
+should_transfer_files = IF_NEEDED
+
+request_gpus = 1
+
+error = /lustre/fs24/group/cqta/tangelides/Logs/$(Cluster)_$(Process).error
+
+output = /lustre/fs24/group/cqta/tangelides/Logs/$(Cluster)_$(Process).out
+
+log = /lustre/fs24/group/cqta/tangelides/Logs/$(Cluster)_$(Process).log
+
+queue

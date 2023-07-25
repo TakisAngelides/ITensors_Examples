@@ -73,19 +73,12 @@ function DMRG()
             # Perform the SVD decomposition on it to get two mps tensors
             gs_even_site_idx = inds(gs_evec; :tags => "n=$i")
             if i == 1
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx); maxdim = max_dim)
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx); maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
                 V = S*V
             else
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "l=$(i-1)")); maxdim = max_dim)
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "l=$(i-1)")); maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
                 V = S*V
             end
-
-            # Change the Index objects that QR generated so that they have consistent tags as the rest of the mps tensors
-            old_U_idx = inds(U; :tags => "u")[1]
-            old_mps_i_idx = inds(mps[i]; :tags => "l=$(i)")[1]
-            new_idx = Index(dim(old_U_idx); tags = tags(old_mps_i_idx))
-            replaceind!(U, old_U_idx, new_idx)
-            replaceind!(V, old_U_idx, new_idx)
             
             # Update the mps
             mps[i], mps[i+1] = U, V
@@ -125,19 +118,12 @@ function DMRG()
             # Perform the SVD decomposition on it to get two mps tensors
             gs_even_site_idx = inds(gs_evec; :tags => "n=$i")
             if i == 1
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx), maxdim = max_dim)
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx), maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
                 U = U*S
             else
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "l=$(i-1)")), maxdim = max_dim)
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "l=$(i-1)")), maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
                 U = U*S
             end
-
-            # Change the Index objects that QR generated so that they have consistent tags as the rest of the mps tensors
-            old_U_idx = inds(U; :tags => "v")[1]
-            old_mps_i_idx = inds(mps[i]; :tags => "l=$(i)")[1]
-            new_idx = Index(dim(old_U_idx); tags = tags(old_mps_i_idx))
-            replaceind!(U, old_U_idx, new_idx)
-            replaceind!(V, old_U_idx, new_idx)
             
             # Update the mps
             mps[i], mps[i+1] = U, V

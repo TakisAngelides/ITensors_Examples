@@ -62,7 +62,7 @@ function DMRG()
             mps_two_site = mps[i]*mps[i+1]
 
             # Now we call the eigensolver with H_eff and mps_two_site
-            vals, vecs = eigsolve(H_eff, mps_two_site, 1, :SR; ishermitian = true) # ; ishermitian = ishermitian)
+            vals, vecs = eigsolve(H_eff, mps_two_site, 1, :SR; ishermitian = true)
             
             # Update current energy with the lowest we found from optimizing sites i, i+1
             E = vals[1]
@@ -107,7 +107,7 @@ function DMRG()
             mps_two_site = mps[i]*mps[i+1]
 
             # Now we call the eigensolver with H_eff and mps_two_site
-            vals, vecs = eigsolve(H_eff, mps_two_site, 1, :SR; ishermitian = true) # ; ishermitian = ishermitian)
+            vals, vecs = eigsolve(H_eff, mps_two_site, 1, :SR; ishermitian = true)
             
             # Update current energy with the lowest we found from optimizing sites i, i+1
             E = vals[1]

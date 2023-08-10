@@ -73,10 +73,10 @@ function DMRG()
             # Perform the SVD decomposition on it to get two mps tensors
             gs_even_site_idx = inds(gs_evec; :tags => "n=$i")
             if i == 1
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx); maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx); maxdim = max_dim, lefttags = "Link,l=$(i)", righttags = "Link,l=$(i)")
                 V = S*V
             else
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "l=$(i-1)")); maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "Link,l=$(i-1)")); maxdim = max_dim, lefttags = "Link,l=$(i)", righttags = "Link,l=$(i)")
                 V = S*V
             end
             
@@ -118,10 +118,10 @@ function DMRG()
             # Perform the SVD decomposition on it to get two mps tensors
             gs_even_site_idx = inds(gs_evec; :tags => "n=$i")
             if i == 1
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx), maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx), maxdim = max_dim, lefttags = "Link,l=$(i)", righttags = "Link,l=$(i)")
                 U = U*S
             else
-                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "l=$(i-1)")), maxdim = max_dim, lefttags = "l=$(i)", righttags = "l=$(i)")
+                U, S, V = ITensors_SVD(gs_evec, (gs_even_site_idx, inds(gs_evec; :tags => "Link,l=$(i-1)")), maxdim = max_dim, lefttags = "Link,l=$(i)", righttags = "Link,l=$(i)")
                 U = U*S
             end
             

@@ -59,13 +59,13 @@ function get_inverse(mpo, sites, cutoff, max_sweeps)
             # Do SVD on M
             U, S, V = ITensors.svd(M, bot..., cutoff = cutoff)
 
-            # Get v named here res
+            # Get v named here v
             S_inv = ITensor(diagm(diag(Array(S, inds(S))).^(-1)), inds(S))
-            res = dag(V)*S_inv*dag(U)*N_tilde
-            res = setprime(res, 1; :plev => 2)
+            v = dag(V)*S_inv*dag(U)*N_tilde
+            v = setprime(v, 1; :plev => 2)
 
-            # SVD on v a.k.a. res so as to update the two sites of the trial MPO
-            U, S, V = ITensors.svd(res, commoninds(res, trial[i]), lefttags = "Link,l=$(i)", righttags = "Link,l=$(i)", cutoff = cutoff)
+            # SVD on v so as to update the two sites of the trial MPO
+            U, S, V = ITensors.svd(v, commoninds(v, trial[i]), lefttags = "Link,l=$(i)", righttags = "Link,l=$(i)", cutoff = cutoff)
             trial[i], trial[i+1] = U, S*V
         
             # Update the left_right_parts_M
@@ -100,10 +100,10 @@ function get_inverse(mpo, sites, cutoff, max_sweeps)
             U, S, V = ITensors.svd(M, bot..., cutoff = cutoff)
 
             S_inv = ITensor(diagm(diag(Array(S, inds(S))).^(-1)), inds(S))
-            res = dag(V)*S_inv*dag(U)*N_tilde
-            res = setprime(res, 1; :plev => 2)
+            v = dag(V)*S_inv*dag(U)*N_tilde
+            v = setprime(v, 1; :plev => 2)
 
-            U, S, V = ITensors.svd(res, commoninds(res, trial[i-1]), lefttags = "Link,l=$(i-1)", righttags = "Link,l=$(i-1)", cutoff = cutoff)
+            U, S, V = ITensors.svd(v, commoninds(v, trial[i-1]), lefttags = "Link,l=$(i-1)", righttags = "Link,l=$(i-1)", cutoff = cutoff)
             
             trial[i-1], trial[i] = U*S, V
 

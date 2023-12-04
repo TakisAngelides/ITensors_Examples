@@ -2,24 +2,21 @@ using ITensors
 using KrylovKit
 using LinearAlgebra
 import ITensors.svd as ITensors_SVD
-include("heat_equation.jl")
 
 function get_inverse(mpo, sites, cutoff, max_sweeps)
 
-    """
-    This function finds the inverse MPO of the mpo input
+    # This function finds the inverse MPO of the mpo input
     
-    We are essentially solving M v = N_tilde where M and N_tilde are tensor networks and v is the solution to our problem for a given pair of sites and we optimize sweeping left and right the
-    trial solution until it reaches the maximum number of sweeps
+    # We are essentially solving M v = N_tilde where M and N_tilde are tensor networks and v is the solution to our problem for a given pair of sites and we optimize sweeping left and right the
+    # trial solution until it reaches the maximum number of sweeps
 
-    SVDs below are affected by the cutoff input
+    # SVDs below are affected by the cutoff input
 
-    What the function essentially does is SVD on M to get M = USV and then v is given by v = V^-1 S^-1 U^-1 N_tilde but we know U^-1 and V^-1 because U and V are unitary
-    hence U^-1, V^-1 = U^\dagger, V^\dagger
+    # What the function essentially does is SVD on M to get M = USV and then v is given by v = V^-1 S^-1 U^-1 N_tilde but we know U^-1 and V^-1 because U and V are unitary
+    # hence U^-1, V^-1 = U^\dagger, V^\dagger
 
-    We initialize arrays left_right_parts_M, left_right_parts_N_tilde to help us compute M and N_tilde and we update them during the optimization
-    """
-
+    # We initialize arrays left_right_parts_M, left_right_parts_N_tilde to help us compute M and N_tilde and we update them during the optimization
+    
     N = length(sites)
     trial = MPO(sites, "Id")
 
@@ -126,7 +123,7 @@ end
 
 N = 4
 sites = siteinds("S=1/2", N)
-mpo = get_mpo(sites)
+mpo = randomMPO(sites)
 max_sweeps = 10
 cutoff = 1e-12
 trial = get_inverse(mpo, sites, cutoff, max_sweeps)
@@ -135,7 +132,7 @@ let
     t = trial'*mpo
     tmp = t[1]
     for i in 2:length(t)
-        tmp*=t[i]
+        tmp *=t[i]
     end
     tmp = Array(tmp, inds(tmp; :plev => 2)..., inds(tmp; :plev => 0)...)
     tmp = reshape(tmp, (2^N, 2^N))

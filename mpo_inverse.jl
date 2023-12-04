@@ -8,7 +8,7 @@ function get_inverse(mpo, sites, cutoff, max_sweeps)
     # This function finds the inverse MPO of the mpo input
     
     # We are essentially solving M v = N_tilde where M and N_tilde are tensor networks and v is the solution to our problem for a given pair of sites and we optimize sweeping left and right the
-    # trial solution until it reaches the maximum number of sweeps
+    # trial solution until it reaches the maximum number of sweeps - see for example Eq. (15) in DOI: 10.1103/PRXQuantum.3.040313
 
     # SVDs below are affected by the cutoff input
 

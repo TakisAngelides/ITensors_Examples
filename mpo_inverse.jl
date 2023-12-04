@@ -19,6 +19,7 @@ function get_inverse(mpo, sites, cutoff, max_sweeps)
     
     N = length(sites)
     trial = MPO(sites, "Id")
+    ITensors.orthogonalize!(trial, 1)
 
     # Initialize left_right_parts_M 
     left_right_parts_M = []
